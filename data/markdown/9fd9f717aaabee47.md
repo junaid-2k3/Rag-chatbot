@@ -1,0 +1,46 @@
+---
+url: https://pwr.nu.edu.pk/upcoming-event-detail/?event_detail=122
+title: "FAST - NUCES Peshawar"
+category: news_events
+campus: peshawar
+source_type: html
+scraped_at: 2026-11-10T04:29:53+00:00
+---
+
+## Upcoming Event Details
+
+1. [Home](http://pwr.nu.edu.pk/)
+2. Upcoming Events
+3. Assessment Team Visit at Peshawar Campus
+
+##
+
+* ##### **Topics:**
+
+  Assessment Team Visit at Peshawar Campus
+* ##### **Host:**
+
+  Fast-Nuces Pwr
+* ##### **Venue:**
+
+  QEC Seminar Room
+* ##### **Date:**
+
+  Jan 03, 22
+* ##### **Start Time:**
+
+  00:00
+
+#### Event Description
+
+Quality Enhancement Cell, Peshawar carried out an Assessment Team (AT) Visit for evaluation of MS Electrical Engineering on January 3rd, 2022. Dr. Fawad Khan, Assistant Professor, Military College of Signals, National University of Science and Technology (NUST), Rawalpindi, and Dr. Usman Abbasi, Assistant Professor, Department of Electrical Engineering, NUCES, Peshawar were the invited subject experts for evaluation of the program. During the visit, the team evaluated the program while reviewing the Self-assessment Report, interacting with faculty members, interviewing students, and visiting departmental facilities. The AT appreciated the efforts put-up by the campus to carried out the MS programs and shared their findings with the Campus Director in the exit meeting.
+
+#### Event Speakers
+
+##### [Dr. Fawad Khan](#0)
+
+###### Assistant Professor, Military College of Signals, National University of Science and Technology (NUST), Rawalpindi
+
+##### [Dr. Usman Abbasi](#0)
+
+###### Assistant Professor, Department of Electrical Engineering, NUCES, Peshawar

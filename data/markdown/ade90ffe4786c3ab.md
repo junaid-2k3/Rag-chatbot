@@ -1,0 +1,54 @@
+---
+url: https://pwr.nu.edu.pk/upcoming-event-detail/?event_detail=70
+title: "FAST - NUCES Peshawar"
+category: news_events
+campus: peshawar
+source_type: html
+scraped_at: 2026-11-10T04:29:53+00:00
+---
+
+## Upcoming Event Details
+
+1. [Home](http://pwr.nu.edu.pk/)
+2. Upcoming Events
+3. Review Panel Visit to Peshawar Campus for Post Graduate Program Review 2022-23 (SDG - 04)
+
+##
+
+* ##### **Topics:**
+
+  Review Panel Visit to Peshawar Campus for Post Graduate Program Review 2022-23 (SDG - 04)
+* ##### **Host:**
+
+  Fast-Nuces Pwr
+* ##### **Venue:**
+
+  QEC Seminar Room
+* ##### **Date:**
+
+  Apr 28, 23
+* ##### **Start Time:**
+
+  00:00
+
+#### Event Description
+
+A Review Panel visited NUCES(FAST), Peshawar Campus for evaluation of structural setup MS and PhD programs offered at the campus. The visit was arranged by QEC on 27th – 28th April, 2023. During the visit, program files, student files, and faculty files were reviewed by the panel. Moreover, the panel had interaction with faculty members and students of both programs. The visit concluded with the submission of a report to the Campus Director consisting of their observations and suggestions for improvement of the programs. Eminent members review panel were; (i) Dr. Fiaz Gul Khan from the Department of Computer Science at COMSATS University Islamabad, Abbottabad Campus. (ii) Dr. Muhammad Amin from Department of Computer Science NUCES-FAST Peshawar Campus.
+
+#### Event Speakers
+
+##### [Dr. Fiaz Gul Khan](#0)
+
+###### Department of Computer Science at COMSATS University Islamabad, Abbottabad Campus
+
+##### [Dr. Muhammad Amin](#0)
+
+###### Department of Computer Science NUCES-FAST Peshawar Campus
+
+##### [Dr. Fiaz Gul Khan](#0)
+
+###### Department of Computer Science at COMSATS University Islamabad, Abbottabad Campus
+
+##### [Dr. Muhammad Amin](#0)
+
+###### Department of Computer Science NUCES-FAST Peshawar Campus
