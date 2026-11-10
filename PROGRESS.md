@@ -12,12 +12,13 @@
 - [x] Cosine top-5 retrieval; 10 hand queries checked (`ingestion/try_queries.py`)
 - Known weak spots (for Phase 3): "CS faculty" ranks society pages first; many web pages have generic title "FAST - NUCES Peshawar"; breadcrumbs inside chunks
 
-## Phase 2 — LLM integration
-- [ ] **You:** put `GEMINI_API_KEY` in `.env`
-- [ ] Verify Gemini model ID + free-tier limits
-- [ ] Prompt builder, citations, 4-turn history
-- [ ] Not-found / out-of-scope refusal
-- [ ] Error + rate-limit handling; CLI chatbot works
+## Phase 2 — LLM integration (done)
+- [x] **You:** put `GEMINI_API_KEY` in `.env`
+- [x] Verify Gemini model ID + limits: `gemini-3.1-flash-lite` exists but returned 503 "high demand" on every try; auto-fallback to `gemini-3.5-flash-lite` (works). Override with `GEMINI_MODEL` / `GEMINI_FALLBACK_MODEL`
+- [x] Prompt builder, citations ([n] -> title + URL, page for PDFs), 4-turn history with follow-up query rewrite
+- [x] Not-found / out-of-scope refusal (score < 0.60 skips the LLM; prompt returns NOT_FOUND; other-campus questions answered "Peshawar only")
+- [x] Error + rate-limit handling (2 tries primary + 1 fallback, then `LLMUnavailable`); CLI: `.venv/bin/python backend/cli.py`
+- Known gaps for Phase 3: "Who is the director?" refuses (name is only a signature under Director Message); free-tier daily quota not yet measured
 
 ## Phase 3 — Evaluation
 - [ ] Draft ~30 questions + ground truth (**You:** review)
