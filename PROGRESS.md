@@ -34,10 +34,15 @@
 - [x] 14 pytest tests (`.venv/bin/python -m pytest backend/tests`); live curl checked: normal, follow-up, off-topic, empty, oversize
 - Run: `.venv/bin/python -m uvicorn app.main:app --app-dir backend --port 8000` (docs at /docs)
 
-## Phase 5 — Astro frontend
-- [ ] **You:** create public GitHub repo, enable Pages, `gh auth login`
-- [ ] Chat UI, source cards, loading/error states
-- [ ] Light/dark + mobile check
+## Phase 5 — Astro frontend (done locally; Pages deploy is Phase 6)
+- [x] Astro 7 + Vite project in `frontend/`, IBM Plex Sans (self-hosted), neutral blue-and-white theme, light/dark toggle (saved, follows system by default)
+- [x] Components: ChatWindow, Message, ChatInput, SourceCard; `services/api.ts`; safe answer renderer `lib/render.ts`
+- [x] Inline `[n]` citation chips jump to the matching source card (backend now renumbers citations to match the sources list)
+- [x] Loading, error + "Try again", empty state with 4 starter questions, 500-char counter, Enter to send
+- [x] Verified in Chromium (Playwright): desktop, 360px and 390px mobile with no horizontal scroll, dark mode, follow-up sends history, mocked 503 -> retry, XSS probe does not execute
+- [x] Tests: `pnpm test` (5, renderer) in `frontend/`; backend now 17
+- [ ] **You:** create public GitHub repo, enable Pages (source: GitHub Actions), `gh auth login` (needed for Phase 6 deploy)
+- Run locally: API `.venv/bin/python -m uvicorn app.main:app --app-dir backend --port 8000`, then `cd frontend && pnpm dev` (open http://localhost:4321). API URL is `PUBLIC_API_URL` (default http://localhost:8000)
 
 ## Phase 6 — AWS deploy
 - [ ] **You:** AWS account, MFA, $1 budget alert, IAM, install AWS CLI, `aws configure`

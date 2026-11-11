@@ -22,6 +22,22 @@ def _source(c: dict) -> dict:
     return {"title": title, "heading": c["heading_path"], "url": c["url"], "page": c["page"], "score": round(c["score"], 3)}
 
 
+def renumber(text: str, n_hits: int) -> tuple[str, list[int]]:
+    """Map the model's [n] markers (indices into the hits) to 1..k in order of first use,
+    so they match the returned sources list. Markers outside 1..n_hits are dropped."""
+    order: list[int] = []
+
+    def sub(m: re.Match) -> str:
+        n = int(m.group(1))
+        if not 1 <= n <= n_hits:
+            return ""
+        if n not in order:
+            order.append(n)
+        return f"[{order.index(n) + 1}]"
+
+    return re.sub(r"\[(\d+)\]", sub, text), order
+
+
 def answer(question: str, history: list[dict] | None = None) -> dict:
     history = history or []
     emb, index = _load()
@@ -41,6 +57,6 @@ def answer(question: str, history: list[dict] | None = None) -> dict:
     if text.strip().startswith("NOT_FOUND"):
         return {"answer": pb.NOT_FOUND_REPLY, "sources": [], "query": query, "found": False}
 
-    cited = sorted({int(n) for n in re.findall(r"\[(\d+)\]", text) if 1 <= int(n) <= len(hits)})
+    text, cited = renumber(text, len(hits))
     used = [hits[n - 1] for n in cited]  # uncited answer (e.g. "only Peshawar info") shows no sources
     return {"answer": text, "sources": [_source(c) for c in used], "query": query, "found": True}

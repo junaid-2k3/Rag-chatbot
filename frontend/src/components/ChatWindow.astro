@@ -1,0 +1,186 @@
+---
+import Message from "./Message.astro";
+import SourceCard from "./SourceCard.astro";
+
+const starters = [
+  "How much is the admission fee?",
+  "When do Fall 2026 classes start?",
+  "What are the hostel rules for boarders?",
+  "How do I apply for admission?",
+];
+---
+
+<section id="log" class="log" role="log" aria-label="Conversation">
+  <div id="empty" class="empty">
+    <h2>What would you like to know?</h2>
+    <p>Ask about fees, admissions, hostels or the academic calendar.</p>
+    <ul class="starters">
+      {starters.map((q) => <li><button type="button" class="starter" data-q={q}>{q}</button></li>)}
+    </ul>
+  </div>
+</section>
+<Message />
+<SourceCard />
+
+<script>
+  import { ApiError, sendChat, type ChatMessage, type ChatResult } from "../services/api.ts";
+  import { renderAnswer } from "../lib/render.ts";
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const log = $("log");
+  const empty = $("empty");
+  const form = $<HTMLFormElement>("chat-form");
+  const input = $<HTMLTextAreaElement>("question");
+  const send = $<HTMLButtonElement>("send");
+  const counter = $("counter");
+  const tplMessage = $<HTMLTemplateElement>("tpl-message");
+  const tplSource = $<HTMLTemplateElement>("tpl-source");
+  const maxChars = Number(input.dataset.max);
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const history: ChatMessage[] = [];
+  let busy = false;
+  let seq = 0;
+
+  const scrollToEnd = () => log.scrollTo({ top: log.scrollHeight, behavior: reduceMotion ? "auto" : "smooth" });
+
+  function newMessage(kind: "user" | "bot") {
+    const el = (tplMessage.content.cloneNode(true) as DocumentFragment).querySelector("article")!;
+    el.classList.add(kind);
+    if (kind === "user") el.querySelector(".sources")!.remove();
+    log.append(el);
+    return el;
+  }
+
+  function addUser(text: string) {
+    const el = newMessage("user");
+    const body = el.querySelector(".body")!;
+    body.textContent = text;
+    body.classList.remove("body");
+    return el;
+  }
+
+  function addPending() {
+    const el = newMessage("bot");
+    el.classList.add("pending");
+    el.setAttribute("role", "status");
+    el.innerHTML = '<span class="typing" aria-hidden="true"><i></i><i></i><i></i></span><span>Searching the campus pages...</span>';
+    scrollToEnd();
+    return el;
+  }
+
+  function displayUrl(url: string, page: number | null) {
+    const u = new URL(url);
+    const path = u.host + (u.pathname === "/" ? "" : u.pathname) + u.search;
+    return page ? `${path} (page ${page})` : path;
+  }
+
+  function addAnswer(result: ChatResult) {
+    const id = `m${++seq}`;
+    const el = newMessage("bot");
+    el.querySelector(".body")!.innerHTML = renderAnswer(result.answer, id, result.sources.length);
+    if (result.sources.length) {
+      const list = el.querySelector(".sources ol")!;
+      result.sources.forEach((s, i) => {
+        const card = (tplSource.content.cloneNode(true) as DocumentFragment).querySelector("li")!;
+        card.id = `src-${id}-${i + 1}`;
+        card.querySelector("a")!.href = s.url;
+        card.querySelector(".n")!.textContent = String(i + 1);
+        card.querySelector(".t")!.textContent = s.title;
+        card.querySelector(".h")!.textContent = s.heading && s.heading !== s.title ? s.heading : "";
+        card.querySelector(".u")!.textContent = displayUrl(s.url, s.page);
+        list.append(card);
+      });
+      el.querySelector<HTMLElement>(".sources")!.hidden = false;
+    }
+    scrollToEnd();
+  }
+
+  function addError(message: string, question: string, userEl: HTMLElement) {
+    const el = newMessage("bot");
+    el.classList.add("error");
+    el.setAttribute("role", "alert");
+    el.innerHTML = "<p></p>";
+    el.querySelector("p")!.textContent = message;
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "retry";
+    retry.textContent = "Try again";
+    retry.addEventListener("click", () => {
+      el.remove();
+      userEl.remove();
+      void ask(question);
+    });
+    el.append(retry);
+    scrollToEnd();
+  }
+
+  async function ask(question: string) {
+    if (busy) return;
+    busy = true;
+    updateSend();
+    empty.hidden = true;
+    const userEl = addUser(question);
+    const pending = addPending();
+    try {
+      const result = await sendChat(question, history);
+      pending.remove();
+      addAnswer(result);
+      history.push({ role: "user", content: question }, { role: "assistant", content: result.answer });
+    } catch (e) {
+      pending.remove();
+      addError(e instanceof ApiError ? e.message : "Something went wrong. Try again.", question, userEl);
+    } finally {
+      busy = false;
+      updateSend();
+    }
+  }
+
+  function updateSend() {
+    send.disabled = busy || input.value.trim() === "";
+  }
+
+  function onInput() {
+    input.style.height = "auto";
+    input.style.height = `${Math.min(input.scrollHeight, 128)}px`;
+    const left = maxChars - input.value.length;
+    counter.textContent = left <= 100 ? `${left} left` : "";
+    updateSend();
+  }
+
+  input.addEventListener("input", onInput);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      if (!send.disabled) form.requestSubmit();
+    }
+  });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const question = input.value.trim();
+    if (!question || busy) return;
+    input.value = "";
+    onInput();
+    void ask(question);
+  });
+
+  empty.addEventListener("click", (e) => {
+    const q = (e.target as HTMLElement).closest<HTMLElement>(".starter")?.dataset.q;
+    if (q) void ask(q);
+  });
+
+  // citation chip -> matching source card
+  log.addEventListener("click", (e) => {
+    const chip = (e.target as HTMLElement).closest<HTMLAnchorElement>("a.cite");
+    if (!chip) return;
+    e.preventDefault();
+    const card = document.getElementById(chip.getAttribute("href")!.slice(1));
+    if (!card) return;
+    card.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
+    card.classList.remove("flash");
+    void card.offsetWidth; // restart the animation
+    card.classList.add("flash");
+    card.querySelector("a")!.focus({ preventScroll: true });
+    setTimeout(() => card.classList.remove("flash"), 1300);
+  });
+</script>

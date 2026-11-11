@@ -1,0 +1,20 @@
+---
+const maxChars = 500;
+---
+
+<div class="composer">
+  <form id="chat-form" autocomplete="off">
+    <label for="question" class="sr-only">Your question</label>
+    <textarea
+      id="question"
+      rows="1"
+      maxlength={maxChars}
+      placeholder="Ask a question"
+      data-max={maxChars}></textarea>
+    <button id="send" class="send" type="submit" disabled>Ask</button>
+  </form>
+  <p class="note">
+    <span>Answers come from pwr.nu.edu.pk pages and may be out of date. For anything important, check <a href="https://nu.edu.pk" target="_blank" rel="noopener noreferrer">nu.edu.pk</a>.</span>
+    <span id="counter" aria-live="polite"></span>
+  </p>
+</div>
