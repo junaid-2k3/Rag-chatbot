@@ -1,0 +1,97 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: FAST Peshawar RAG chatbot - Lambda (zip) behind a Function URL. Bucket is created by deploy.sh.
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Private S3 bucket holding code/, index/ and models/
+  CodeKey:
+    Type: String
+    Description: S3 key of the Lambda zip, e.g. code/lambda-abc123.zip
+  AllowedOrigins:
+    Type: String
+    Description: Comma-separated browser origins allowed by CORS (the GitHub Pages origin)
+  GeminiApiKey:
+    Type: String
+    NoEcho: true
+
+Resources:
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/fast-pwr-chatbot
+      RetentionInDays: 14
+
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: chatbot-minimal
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub "${LogGroup.Arn}:*"
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource:
+                  - !Sub "arn:aws:s3:::${BucketName}/index/*"
+                  - !Sub "arn:aws:s3:::${BucketName}/models/*"
+
+  Function:
+    Type: AWS::Lambda::Function
+    DependsOn: LogGroup
+    Properties:
+      FunctionName: fast-pwr-chatbot
+      Runtime: python3.12
+      Architectures: [x86_64]
+      Handler: lambda_handler.handler
+      MemorySize: 2048
+      Timeout: 90
+      Role: !GetAtt Role.Arn
+      Code:
+        S3Bucket: !Ref BucketName
+        S3Key: !Ref CodeKey
+      Environment:
+        Variables:
+          GEMINI_API_KEY: !Ref GeminiApiKey
+          ALLOWED_ORIGINS: !Ref AllowedOrigins
+          S3_BUCKET: !Ref BucketName
+          INDEX_DIR: /tmp/index
+          MODEL_DIR: /tmp/model
+          ENABLE_DOCS: "0"
+          ORT_THREADS: "2"
+
+  # CORS is handled by FastAPI; configuring it here too would send duplicate headers.
+  FunctionUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !GetAtt Function.Arn
+      AuthType: NONE
+
+  PermissionInvokeUrl:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref Function
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+      FunctionUrlAuthType: NONE
+
+  PermissionInvokeFunction:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref Function
+      Action: lambda:InvokeFunction
+      Principal: "*"
+      InvokedViaFunctionUrl: true
+
+Outputs:
+  FunctionUrl:
+    Value: !GetAtt FunctionUrl.FunctionUrl

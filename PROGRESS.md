@@ -44,12 +44,18 @@
 - [ ] **You:** create public GitHub repo, enable Pages (source: GitHub Actions), `gh auth login` (needed for Phase 6 deploy)
 - Run locally: API `.venv/bin/python -m uvicorn app.main:app --app-dir backend --port 8000`, then `cd frontend && pnpm dev` (open http://localhost:4321). API URL is `PUBLIC_API_URL` (default http://localhost:8000)
 
-## Phase 6 — AWS deploy
-- [ ] **You:** AWS account, MFA, $1 budget alert, IAM, install AWS CLI, `aws configure`
-- [ ] Private S3 bucket + index upload
-- [ ] Lambda container image (Docker) + Function URL
-- [ ] Concurrency cap, CORS, env var secret
-- [ ] GitHub Pages deploy; end-to-end test
+## Phase 6 — AWS deploy (prep done, deploy waiting on your accounts)
+- [x] Decisions: zip + model fetched from S3 to /tmp, region ap-south-1, no reserved concurrency (Gemini quota + budget alert + input limits instead), repo `fast-peshawar-chatbot`
+- [x] Lambda handler (Mangum, Function URL), S3 asset loader, Swagger off in production
+- [x] `infrastructure/build_zip.sh` (165 MB unzipped, 53 MB zipped; uploaded via S3), `template.yaml` (cfn-lint clean), `deploy.sh`, `destroy.sh`
+- [x] `.github/workflows/deploy-frontend.yml` (Pages; reads repo variable `PUBLIC_API_URL`)
+- [x] Verified locally: built zip invoked with Function URL events (CORS allow/deny, docs 404, refusal, real Gemini answer); 19 backend tests
+- [ ] **You:** `gh auth login`
+- [ ] **You:** AWS account, MFA on root, $1 budget alert, IAM user for CLI, install AWS CLI v2, `aws configure`
+- [ ] Create public repo `fast-peshawar-chatbot`, push (rename branch to `main`), enable Pages (source: GitHub Actions)
+- [ ] Run `ALLOWED_ORIGINS=https://<user>.github.io ./infrastructure/deploy.sh` (untested until AWS exists)
+- [ ] Set repo variable `PUBLIC_API_URL` = Function URL, run the Pages workflow
+- [ ] End-to-end test from the live site; measure cold and warm latency; check billing page
 
 ## Phase 7 — Docs
 - [ ] README, architecture diagram, eval results, latency numbers

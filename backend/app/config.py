@@ -10,6 +10,8 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 GEMINI_FALLBACK_MODEL = os.environ.get("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash-lite")
 INDEX_DIR = Path(os.environ.get("INDEX_DIR", ROOT / "index"))
+S3_BUCKET = os.environ.get("S3_BUCKET", "")  # set on Lambda: index and model are downloaded from here to /tmp
+ENABLE_DOCS = os.environ.get("ENABLE_DOCS", "1") == "1"  # Swagger UI off in production
 
 # comma-separated; lock to the GitHub Pages origin in production
 ALLOWED_ORIGINS = [o.strip() for o in os.environ.get("ALLOWED_ORIGINS", "http://localhost:4321").split(",") if o.strip()]

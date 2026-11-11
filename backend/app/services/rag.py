@@ -3,13 +3,14 @@ import re
 from functools import lru_cache
 
 from .. import config
-from . import llm, prompt_builder as pb
+from . import llm, prompt_builder as pb, storage
 from .embeddings import Embedder
 from .retrieval import Index
 
 
 @lru_cache(maxsize=1)
 def _load():
+    storage.ensure_assets()
     return Embedder(), Index(config.INDEX_DIR)
 
 

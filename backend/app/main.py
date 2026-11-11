@@ -8,7 +8,12 @@ from .routes.chat import router
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s %(message)s")
 
-app = FastAPI(title="FAST Peshawar RAG chatbot", docs_url="/docs")
+app = FastAPI(
+    title="FAST Peshawar RAG chatbot",
+    docs_url="/docs" if config.ENABLE_DOCS else None,
+    redoc_url=None,
+    openapi_url="/openapi.json" if config.ENABLE_DOCS else None,
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.ALLOWED_ORIGINS,
