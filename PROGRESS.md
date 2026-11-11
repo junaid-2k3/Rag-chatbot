@@ -27,9 +27,12 @@
 - [x] Chunk size compared (450/80 vs 250/40) + boilerplate cleaning; shipped 250/40 (`evaluation/report.md`)
 - Open: stale 2021/2022 calendar PDFs still indexed (your call); campus area/address retrieval misses
 
-## Phase 4 — FastAPI backend
-- [ ] `/chat` endpoint + schemas + validation
-- [ ] Tested: normal, empty, oversize, off-topic
+## Phase 4 — FastAPI backend (done)
+- [x] Stale 2021/2022 calendars, timetables, date sheet excluded from index (1,392 chunks; Recall@5 0.92, MRR 0.83)
+- [x] `POST /chat` + `GET /health`, pydantic schemas, 503 when Gemini is down, CORS via `ALLOWED_ORIGINS`
+- [x] Input limits: question 1-500 chars, history max 8 messages of 2,000 chars
+- [x] 14 pytest tests (`.venv/bin/python -m pytest backend/tests`); live curl checked: normal, follow-up, off-topic, empty, oversize
+- Run: `.venv/bin/python -m uvicorn app.main:app --app-dir backend --port 8000` (docs at /docs)
 
 ## Phase 5 — Astro frontend
 - [ ] **You:** create public GitHub repo, enable Pages, `gh auth login`

@@ -17,7 +17,8 @@ from app.services.embeddings import Embedder  # noqa: E402
 
 MD, OUT = ROOT / "data" / "markdown", Path(os.environ.get("INDEX_OUT", ROOT / "index"))
 CHUNK_TOKENS, OVERLAP_TOKENS = int(os.environ.get("CHUNK_TOKENS", 250)), int(os.environ.get("OVERLAP_TOKENS", 40))
-EXCLUDE_URL = ("Prospectus-2020.pdf", "student-handbook-2020.pdf")  # outdated, per user decision
+# outdated PDFs, excluded per user decision (2020 prospectus/handbook; 2021-22 calendars, timetables, date sheet)
+EXCLUDE_URL = ("Prospectus-2020.pdf", "student-handbook-2020.pdf", "Academic%20Calendar", "Time%20Table", "DateSheet%20Final")
 
 
 def parse(path: Path):
@@ -78,7 +79,7 @@ def main():
     chunks = []
     for f in sorted(MD.glob("*.md")):
         meta, body = parse(f)
-        if meta["url"].endswith(EXCLUDE_URL):
+        if any(x in meta["url"] for x in EXCLUDE_URL):
             continue
         for hp, text in sections(clean(body)):
             for piece in token_windows(tok, text):
