@@ -1,0 +1,460 @@
+{
+  "summary": {
+    "index": "/home/junaid/University_chatbot/index",
+    "n_answerable": 25,
+    "recall@5": 0.92,
+    "precision@5": 0.47200000000000003,
+    "mrr": 0.8233333333333333,
+    "correct_refusals": "6/6",
+    "false_refusals": "1/25",
+    "faithfulness": 4.833333333333333,
+    "relevancy": 5.0,
+    "keys_present": "23/24",
+    "llm_errors": 0
+  },
+  "rows": [
+    {
+      "id": "q01",
+      "question": "What is the admission fee and is it refundable?",
+      "answerable": true,
+      "top1_score": 0.768,
+      "hit": true,
+      "precision": 0.8,
+      "rr": 1.0,
+      "answer": "The admission fee is Rs 30,000 [1]. It is non-refundable [2].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q02",
+      "question": "What is the tuition fee per credit hour for BS students?",
+      "answerable": true,
+      "top1_score": 0.754,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 1.0,
+      "answer": "The tuition fee per credit hour for BS students is Rs. 12,000 [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q03",
+      "question": "How much is the Student Activities Fund per semester?",
+      "answerable": true,
+      "top1_score": 0.823,
+      "hit": true,
+      "precision": 0.4,
+      "rr": 1.0,
+      "answer": "Students contribute Rs 2,500 towards the Student Activities Fund per semester [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q04",
+      "question": "What is the fee for retaking a final exam per course?",
+      "answerable": true,
+      "top1_score": 0.763,
+      "hit": true,
+      "precision": 0.8,
+      "rr": 1.0,
+      "answer": "The fee for retaking a final exam per course/lab is Rs. 2,000 [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q05",
+      "question": "How much does a campus transfer cost?",
+      "answerable": true,
+      "top1_score": 0.728,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 1.0,
+      "answer": "The campus transfer fee is Rs. 5,000 [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q06",
+      "question": "What percentage of fee is refunded if I withdraw by the 10th day of classes?",
+      "answerable": true,
+      "top1_score": 0.764,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 1.0,
+      "answer": "If you withdraw by the 10th day of the commencement of classes, 100% of the tuition fee is refunded [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q07",
+      "question": "When can I submit my admission application for 2026?",
+      "answerable": true,
+      "top1_score": 0.685,
+      "hit": true,
+      "precision": 0.2,
+      "rr": 1.0,
+      "answer": "You can submit your admission application for 2026 between May 20 (Wed) and June 30 (Tue) [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q08",
+      "question": "When is the merit list for undergraduate programs announced?",
+      "answerable": true,
+      "top1_score": 0.669,
+      "hit": true,
+      "precision": 0.2,
+      "rr": 1.0,
+      "answer": "The merit list for undergraduate programs is announced on July 22 (Wed) [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q09",
+      "question": "When do classes commence for new admissions?",
+      "answerable": true,
+      "top1_score": 0.696,
+      "hit": true,
+      "precision": 0.4,
+      "rr": 0.3333333333333333,
+      "answer": "Classes for new admissions commence on August 17 [3], [5].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q10",
+      "question": "How do I apply for admission and can I apply by post?",
+      "answerable": true,
+      "top1_score": 0.713,
+      "hit": true,
+      "precision": 1.0,
+      "rr": 1.0,
+      "answer": "To apply for admission, follow these steps:\n\n1. Fill out the Admission Application Form online [1], [2].\n2. Note the unique Application Reference Number (ARN) assigned by the system [1], [2].\n3. Ensure all information entered is correct to avoid cancellation of admission [1], [2].\n4. Deposit the Application Fee at the designated bank [1].\n5. Print your Admit Card after payment [1].\n6. Visit the test campus on the date and time specified on your Admit Card [1], [4].\n\nApplications received through post or by hand will not be accepted or entertained [1], [2].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q11",
+      "question": "What is the ARN given during the application?",
+      "answerable": true,
+      "top1_score": 0.701,
+      "hit": true,
+      "precision": 0.4,
+      "rr": 1.0,
+      "answer": "The online system assigns a unique Application Reference Number (ARN) to each applicant, which must be noted for later use [1], [2].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q12",
+      "question": "When do Fall 2026 classes start?",
+      "answerable": true,
+      "top1_score": 0.707,
+      "hit": true,
+      "precision": 0.2,
+      "rr": 1.0,
+      "answer": "The first day of classes for Fall 2026 is Monday, 17 August 2026 [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q13",
+      "question": "When are the Sessional I exams in Fall 2026?",
+      "answerable": true,
+      "top1_score": 0.719,
+      "hit": true,
+      "precision": 0.2,
+      "rr": 1.0,
+      "answer": "The Sessional I exams for Fall 2026 are scheduled from 19 September 2026 to 23 September 2026 [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q14",
+      "question": "Are there on-campus hostels for female students?",
+      "answerable": true,
+      "top1_score": 0.715,
+      "hit": true,
+      "precision": 0.8,
+      "rr": 1.0,
+      "answer": "No, on-campus hostels are for male students only [1]. Female students should refer to the external hostels list for private accommodation options [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q15",
+      "question": "By what time must boarders be back in the hostel?",
+      "answerable": true,
+      "top1_score": 0.738,
+      "hit": true,
+      "precision": 1.0,
+      "rr": 1.0,
+      "answer": "Boarders must be back in the hostel by 11:00 PM [1], [2].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q16",
+      "question": "What is the rent of Durrani Hostel?",
+      "answerable": true,
+      "top1_score": 0.636,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 1.0,
+      "answer": "The rent for Durrani Hostel is 7000 [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q17",
+      "question": "When was the Peshawar campus established?",
+      "answerable": true,
+      "top1_score": 0.782,
+      "hit": true,
+      "precision": 0.4,
+      "rr": 0.5,
+      "answer": "The FAST-NUCES Peshawar campus was established in 2001 [1], [2].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q18",
+      "question": "What is the campus area and where is it located?",
+      "answerable": true,
+      "top1_score": 0.696,
+      "hit": false,
+      "precision": 0.0,
+      "rr": 0.0,
+      "answer": "I could not find that in the FAST-NUCES Peshawar information I have. Please check the official site: https://nu.edu.pk",
+      "refused": true
+    },
+    {
+      "id": "q19",
+      "question": "What is the vision of the university?",
+      "answerable": true,
+      "top1_score": 0.767,
+      "hit": true,
+      "precision": 0.2,
+      "rr": 0.25,
+      "answer": "The vision of the university is to produce world-class professionals who are responsible citizens and good human beings [2].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q20",
+      "question": "What is the campus address?",
+      "answerable": true,
+      "top1_score": 0.674,
+      "hit": false,
+      "precision": 0.0,
+      "rr": 0.0,
+      "answer": "The campus address is 160 Industrial Estate, Jamrud Road, Peshawar [1] or 160 Industrial Estate, Hayatabad, Peshawar, Pakistan [3].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q21",
+      "question": "What library system does the campus use?",
+      "answerable": true,
+      "top1_score": 0.727,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 0.5,
+      "answer": "The Peshawar campus library is based on INSIGNIA [3].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q22",
+      "question": "Does the campus provide transport for students?",
+      "answerable": true,
+      "top1_score": 0.781,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 1.0,
+      "answer": "Yes, the university provides transport to pick and drop students from selected points on a self-finance basis using two buses that cover almost all areas of Peshawar [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q23",
+      "question": "Who is the convener of the GEIAH committee?",
+      "answerable": true,
+      "top1_score": 0.709,
+      "hit": true,
+      "precision": 0.6,
+      "rr": 1.0,
+      "answer": "The convener of the GEIAH committee is Sara Rehmat [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q24",
+      "question": "Who supervised the Urdu Chatbot API System final year project?",
+      "answerable": true,
+      "top1_score": 0.699,
+      "hit": true,
+      "precision": 0.4,
+      "rr": 1.0,
+      "answer": "The Urdu Chatbot API System final year project was supervised by Dr. Omar Usman Khan [1].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 5,
+        "relevancy": 5,
+        "keys_present": true
+      }
+    },
+    {
+      "id": "q25",
+      "question": "Who is the director of the campus?",
+      "answerable": true,
+      "top1_score": 0.657,
+      "hit": true,
+      "precision": 0.2,
+      "rr": 1.0,
+      "answer": "The director of the campus is Dr. Omar Usman Khan [1], [5].",
+      "refused": false,
+      "judge": {
+        "faithfulness": 1,
+        "relevancy": 5,
+        "keys_present": false
+      }
+    },
+    {
+      "id": "q26",
+      "question": "What is the capital of France?",
+      "answerable": false,
+      "top1_score": 0.456,
+      "answer": "I could not find that in the FAST-NUCES Peshawar information I have. Please check the official site: https://nu.edu.pk",
+      "refused": true
+    },
+    {
+      "id": "q27",
+      "question": "What are the tuition fees at the Karachi campus?",
+      "answerable": false,
+      "top1_score": 0.743,
+      "answer": "I only have Peshawar information.",
+      "refused": true
+    },
+    {
+      "id": "q28",
+      "question": "What is the hostel fee at the Lahore campus?",
+      "answerable": false,
+      "top1_score": 0.722,
+      "answer": "I only have Peshawar information.",
+      "refused": true
+    },
+    {
+      "id": "q29",
+      "question": "Who is the prime minister of Pakistan?",
+      "answerable": false,
+      "top1_score": 0.675,
+      "answer": "I could not find that in the FAST-NUCES Peshawar information I have. Please check the official site: https://nu.edu.pk",
+      "refused": true
+    },
+    {
+      "id": "q30",
+      "question": "How much does a biryani cost in the cafeteria?",
+      "answerable": false,
+      "top1_score": 0.69,
+      "answer": "I could not find that in the FAST-NUCES Peshawar information I have. Please check the official site: https://nu.edu.pk",
+      "refused": true
+    },
+    {
+      "id": "q31",
+      "question": "What is the phone number of the Dean of the Law faculty?",
+      "answerable": false,
+      "top1_score": 0.594,
+      "answer": "I could not find that in the FAST-NUCES Peshawar information I have. Please check the official site: https://nu.edu.pk",
+      "refused": true
+    }
+  ]
+}

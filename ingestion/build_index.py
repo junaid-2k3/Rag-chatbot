@@ -1,8 +1,9 @@
 """One-time index build: data/markdown/*.md -> index/{vectors.npy,chunks.jsonl,manifest.json}.
 
-Chunks are 450 tokens with 80 overlap, split inside heading sections (bge tokenizer counts tokens).
+Chunks are 250 tokens with 40 overlap (chosen over 450/80 by evaluation/), split inside heading sections (bge tokenizer counts tokens).
 """
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -14,8 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "backend"))
 from app.services.embeddings import Embedder  # noqa: E402
 
-MD, OUT = ROOT / "data" / "markdown", ROOT / "index"
-CHUNK_TOKENS, OVERLAP_TOKENS = 450, 80
+MD, OUT = ROOT / "data" / "markdown", Path(os.environ.get("INDEX_OUT", ROOT / "index"))
+CHUNK_TOKENS, OVERLAP_TOKENS = int(os.environ.get("CHUNK_TOKENS", 250)), int(os.environ.get("OVERLAP_TOKENS", 40))
 EXCLUDE_URL = ("Prospectus-2020.pdf", "student-handbook-2020.pdf")  # outdated, per user decision
 
 
@@ -27,6 +28,18 @@ def parse(path: Path):
         k, _, v = line.partition(": ")
         meta[k] = json.loads(v) if v.startswith('"') else v
     return meta, body.strip()
+
+
+BREADCRUMB = re.compile(r"^1\. \[Home\]\([^)]*\)\n(?:\d+\. [^\n]{1,60}\n)*", re.M)
+BOILERPLATE = re.compile(r"^.*(?:auto-retrieved from|\[INCLUDE:).*\n?", re.M)
+TEL_MAIL = re.compile(r"\[([^\]]*)\]\((?:tel|mailto):[^)]*\)")
+
+
+def clean(body: str) -> str:
+    """Drop breadcrumbs and page-include boilerplate that swamp short pages in embeddings."""
+    body = BREADCRUMB.sub("", body + "\n")
+    body = BOILERPLATE.sub("", body)
+    return TEL_MAIL.sub(r"\1", body).strip()
 
 
 def sections(body: str):
@@ -67,7 +80,7 @@ def main():
         meta, body = parse(f)
         if meta["url"].endswith(EXCLUDE_URL):
             continue
-        for hp, text in sections(body):
+        for hp, text in sections(clean(body)):
             for piece in token_windows(tok, text):
                 page = re.search(r"Page (\d+)", hp)
                 chunks.append({

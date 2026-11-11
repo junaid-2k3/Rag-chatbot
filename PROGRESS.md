@@ -20,11 +20,12 @@
 - [x] Error + rate-limit handling (2 tries primary + 1 fallback, then `LLMUnavailable`); CLI: `.venv/bin/python backend/cli.py`
 - Known gaps for Phase 3: "Who is the director?" refuses (name is only a signature under Director Message); free-tier daily quota not yet measured
 
-## Phase 3 — Evaluation
-- [ ] Draft ~30 questions + ground truth (**You:** review)
-- [ ] Recall@5, Precision@5, MRR
-- [ ] Gemini-judge faithfulness / relevancy
-- [ ] Try one alternative chunk size; write report
+## Phase 3 — Evaluation (done)
+- [x] Draft 31 questions + ground truth (**You:** review `evaluation/ground_truth.jsonl`, especially q25 director)
+- [x] Recall@5 0.92, Precision@5 0.47, MRR 0.82
+- [x] Gemini-judge faithfulness 4.83 / relevancy 5.0; refusals 6/6 correct, 1/25 false
+- [x] Chunk size compared (450/80 vs 250/40) + boilerplate cleaning; shipped 250/40 (`evaluation/report.md`)
+- Open: stale 2021/2022 calendar PDFs still indexed (your call); campus area/address retrieval misses
 
 ## Phase 4 — FastAPI backend
 - [ ] `/chat` endpoint + schemas + validation

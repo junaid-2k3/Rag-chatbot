@@ -1,8 +1,8 @@
 {
   "model": "BAAI/bge-small-en-v1.5",
   "dim": 384,
-  "count": 1307,
-  "chunk_tokens": 450,
-  "overlap_tokens": 80,
-  "built_at": "2026-11-10T19:16:24+00:00"
+  "count": 1430,
+  "chunk_tokens": 250,
+  "overlap_tokens": 40,
+  "built_at": "2026-11-11T06:22:21+00:00"
 }
