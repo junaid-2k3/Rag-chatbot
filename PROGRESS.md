@@ -45,14 +45,14 @@
 - Run locally: API `.venv/bin/python -m uvicorn app.main:app --app-dir backend --port 8000`, then `cd frontend && pnpm dev` (open http://localhost:4321). API URL is `PUBLIC_API_URL` (default http://localhost:8000)
 
 ## Phase 6 — AWS deploy (prep done, deploy waiting on your accounts)
-- [x] Decisions: zip + model fetched from S3 to /tmp, region ap-south-1, no reserved concurrency (Gemini quota + budget alert + input limits instead), repo `fast-peshawar-chatbot`
+- [x] Decisions: zip + model fetched from S3 to /tmp, region ap-south-1, no reserved concurrency (Gemini quota + budget alert + input limits instead), repo `junaid-2k3/Rag-chatbot` (you created it)
 - [x] Lambda handler (Mangum, Function URL), S3 asset loader, Swagger off in production
 - [x] `infrastructure/build_zip.sh` (165 MB unzipped, 53 MB zipped; uploaded via S3), `template.yaml` (cfn-lint clean), `deploy.sh`, `destroy.sh`
 - [x] `.github/workflows/deploy-frontend.yml` (Pages; reads repo variable `PUBLIC_API_URL`)
 - [x] Verified locally: built zip invoked with Function URL events (CORS allow/deny, docs 404, refusal, real Gemini answer); 19 backend tests
-- [ ] **You:** `gh auth login`
+- [x] **You:** `gh auth login` (+ `workflow` scope)
 - [ ] **You:** AWS account, MFA on root, $1 budget alert, IAM user for CLI, install AWS CLI v2, `aws configure`
-- [ ] Create public repo `fast-peshawar-chatbot`, push (rename branch to `main`), enable Pages (source: GitHub Actions)
+- [x] Pushed to https://github.com/junaid-2k3/Rag-chatbot (branch `main`); Pages enabled (Actions source); workflow green; live at https://junaid-2k3.github.io/Rag-chatbot/ (API URL still defaults to localhost until the backend is deployed)
 - [ ] Run `ALLOWED_ORIGINS=https://<user>.github.io ./infrastructure/deploy.sh` (untested until AWS exists)
 - [ ] Set repo variable `PUBLIC_API_URL` = Function URL, run the Pages workflow
 - [ ] End-to-end test from the live site; measure cold and warm latency; check billing page
