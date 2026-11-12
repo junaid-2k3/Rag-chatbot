@@ -55,6 +55,7 @@ Resources:
       Handler: lambda_handler.handler
       MemorySize: 2048
       Timeout: 90
+      ReservedConcurrentExecutions: 3 # spend/abuse cap; account quota is 400
       Role: !GetAtt Role.Arn
       Code:
         S3Bucket: !Ref BucketName

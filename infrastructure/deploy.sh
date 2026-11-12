@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 : "${ALLOWED_ORIGINS:?set ALLOWED_ORIGINS to the GitHub Pages origin, e.g. https://user.github.io}"
-export AWS_DEFAULT_REGION="${AWS_REGION:-ap-south-1}"
+export AWS_DEFAULT_REGION="${AWS_REGION:-ap-southeast-2}"
 STACK=fast-pwr-chatbot
 
 set -a; [ -f .env ] && . ./.env; set +a
