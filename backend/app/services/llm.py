@@ -1,9 +1,12 @@
 """Minimal Gemini REST client (no SDK, keeps the Lambda image small)."""
+import logging
 import time
 
 import httpx
 
 from .. import config
+
+log = logging.getLogger("llm")
 
 URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 RETRYABLE = {429, 500, 502, 503, 504}
@@ -38,13 +41,17 @@ def generate(system: str, contents: list[dict], max_tokens: int = 700, temperatu
     """Try primary model twice, then the fallback model once. Raise LLMUnavailable if all fail."""
     attempts = [config.GEMINI_MODEL, config.GEMINI_MODEL, config.GEMINI_FALLBACK_MODEL]
     for n, model in enumerate(attempts):
+        t0 = time.monotonic()
         try:
-            return _call(model, system, contents, max_tokens, temperature)
+            text = _call(model, system, contents, max_tokens, temperature)
+            log.info("gemini model=%s ok %.1fs", model, time.monotonic() - t0)
+            return text
         except _HTTPError as e:
+            log.warning("gemini model=%s status=%s %.1fs", model, e.status, time.monotonic() - t0)
             if e.status not in RETRYABLE and e.status != 0:
                 raise LLMUnavailable(f"Gemini error {e.status}") from e
-        except httpx.HTTPError:
-            pass
+        except httpx.HTTPError as e:
+            log.warning("gemini model=%s %s %.1fs", model, type(e).__name__, time.monotonic() - t0)
         if n < len(attempts) - 1:
             time.sleep(1.5)
     raise LLMUnavailable("Gemini is busy or the free quota is used up")

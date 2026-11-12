@@ -1,6 +1,7 @@
 """End-to-end RAG: (history, question) -> answer + sources."""
 import re
 from functools import lru_cache
+from urllib.parse import unquote, urlparse
 
 from .. import config
 from . import llm, prompt_builder as pb, storage
@@ -17,26 +18,38 @@ def _load():
 GENERIC_TITLES = {"", "FAST - NUCES Peshawar"}
 
 
+def _pdf_title(url: str) -> str:
+    name = unquote(urlparse(url).path.rsplit("/", 1)[-1])
+    return re.sub(r"[_-]+", " ", re.sub(r"\.pdf$", "", name, flags=re.I)).strip() or url
+
+
 def _source(c: dict) -> dict:
-    # many scraped pages share the generic site title; fall back to the first heading
-    title = c["title"] if c["title"] not in GENERIC_TITLES else (c["heading_path"].split(" > ")[0] or c["url"])
+    # scraped PDFs have only a hash as title and many pages share the generic site title
+    if c["source_type"] == "pdf":
+        title = _pdf_title(c["url"])
+    elif c["title"] in GENERIC_TITLES:
+        title = c["heading_path"].split(" > ")[0] or c["url"]
+    else:
+        title = c["title"]
     return {"title": title, "heading": c["heading_path"], "url": c["url"], "page": c["page"], "score": round(c["score"], 3)}
 
 
-def renumber(text: str, n_hits: int) -> tuple[str, list[int]]:
-    """Map the model's [n] markers (indices into the hits) to 1..k in order of first use,
-    so they match the returned sources list. Markers outside 1..n_hits are dropped."""
-    order: list[int] = []
+def renumber(text: str, keys: list[str]) -> tuple[str, list[int]]:
+    """Map the model's [n] markers (n = 1-based hit number) to one number per distinct source
+    (keys[n-1], the hit's URL), in order of first use, so they match the deduplicated sources list.
+    Markers outside 1..len(keys) are dropped. Returns the text and, per source, its first cited hit number."""
+    first_hit: dict[str, int] = {}
 
     def sub(m: re.Match) -> str:
         n = int(m.group(1))
-        if not 1 <= n <= n_hits:
+        if not 1 <= n <= len(keys):
             return ""
-        if n not in order:
-            order.append(n)
-        return f"[{order.index(n) + 1}]"
+        first_hit.setdefault(keys[n - 1], n)
+        return f"[{list(first_hit).index(keys[n - 1]) + 1}]"
 
-    return re.sub(r"\[(\d+)\]", sub, text), order
+    out = re.sub(r"\[(\d+)\]", sub, text)
+    out = re.sub(r"(\[\d+\])(?:,?\s*\1)+", r"\1", out)  # "[1], [1]" -> "[1]"
+    return out, list(first_hit.values())
 
 
 def answer(question: str, history: list[dict] | None = None) -> dict:
@@ -58,6 +71,6 @@ def answer(question: str, history: list[dict] | None = None) -> dict:
     if text.strip().startswith("NOT_FOUND"):
         return {"answer": pb.NOT_FOUND_REPLY, "sources": [], "query": query, "found": False}
 
-    text, cited = renumber(text, len(hits))
+    text, cited = renumber(text, [h["url"] for h in hits])
     used = [hits[n - 1] for n in cited]  # uncited answer (e.g. "only Peshawar info") shows no sources
     return {"answer": text, "sources": [_source(c) for c in used], "query": query, "found": True}

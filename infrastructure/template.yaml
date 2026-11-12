@@ -53,7 +53,7 @@ Resources:
       Runtime: python3.12
       Architectures: [x86_64]
       Handler: lambda_handler.handler
-      MemorySize: 2048
+      MemorySize: 1024
       Timeout: 90
       ReservedConcurrentExecutions: 3 # spend/abuse cap; account quota is 400
       Role: !GetAtt Role.Arn

@@ -53,7 +53,7 @@
 - [x] **You:** `gh auth login` (+ `workflow` scope)
 - [x] **You:** AWS account (Free plan, $100 credits to 2027-05-11), IAM user `deployer`, AWS CLI v2 configured. Do NOT create a spend limit in AWS Settings: near the limit AWS denies Lambda/CloudFormation creation
 - [x] Pushed to https://github.com/junaid-2k3/Rag-chatbot (branch `main`); Pages enabled (Actions source); workflow green; live at https://junaid-2k3.github.io/Rag-chatbot/ (API URL still defaults to localhost until the backend is deployed)
-- [ ] Run `ALLOWED_ORIGINS=https://<user>.github.io ./infrastructure/deploy.sh` (untested until AWS exists)
+- [x] Deployed to ap-southeast-2 with `ALLOWED_ORIGINS=https://junaid-2k3.github.io ./infrastructure/deploy.sh`. Function URL: https://nsgcu3ywayyk3gagfwq6thvkru0htuyi.lambda-url.ap-southeast-2.on.aws/ (1024 MB, reserved concurrency 3, Swagger off, logs kept 14 days)
 - [ ] Set repo variable `PUBLIC_API_URL` = Function URL, run the Pages workflow
 - [ ] End-to-end test from the live site; measure cold and warm latency; check billing page
 

@@ -7,6 +7,8 @@ from . import config
 from .routes.chat import router
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s %(message)s")
+logging.getLogger().setLevel(logging.INFO)  # Lambda pre-installs a handler, so basicConfig alone does not set the level
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 app = FastAPI(
     title="FAST Peshawar RAG chatbot",
