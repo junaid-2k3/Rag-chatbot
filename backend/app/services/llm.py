@@ -22,7 +22,7 @@ def _call(model: str, system: str, contents: list[dict], max_tokens: int, temper
         "contents": contents,
         "generationConfig": {"temperature": temperature, "maxOutputTokens": max_tokens},
     }
-    r = httpx.post(URL.format(model=model), json=body, headers={"x-goog-api-key": config.GEMINI_API_KEY}, timeout=30)
+    r = httpx.post(URL.format(model=model), json=body, headers={"x-goog-api-key": config.GEMINI_API_KEY}, timeout=15)
     if r.status_code != 200:
         raise _HTTPError(r.status_code)
     cands = r.json().get("candidates") or []

@@ -44,18 +44,16 @@
 - [ ] **You:** create public GitHub repo, enable Pages (source: GitHub Actions), `gh auth login` (needed for Phase 6 deploy)
 - Run locally: API `.venv/bin/python -m uvicorn app.main:app --app-dir backend --port 8000`, then `cd frontend && pnpm dev` (open http://localhost:4321). API URL is `PUBLIC_API_URL` (default http://localhost:8000)
 
-## Phase 6 — AWS deploy (prep done, deploy waiting on your accounts)
-- [x] Decisions: zip + model fetched from S3 to /tmp, region **ap-southeast-2 (Sydney)** (new-style Free plan accounts are locked to one region chosen from the contact country, Pakistan -> Sydney; other regions are denied by AWS-managed SCPs), reserved concurrency 3 (account quota is 400) plus input limits and budget alert, repo `junaid-2k3/Rag-chatbot` (you created it)
-- [x] Lambda handler (Mangum, Function URL), S3 asset loader, Swagger off in production
-- [x] `infrastructure/build_zip.sh` (165 MB unzipped, 53 MB zipped; uploaded via S3), `template.yaml` (cfn-lint clean), `deploy.sh`, `destroy.sh`
-- [x] `.github/workflows/deploy-frontend.yml` (Pages; reads repo variable `PUBLIC_API_URL`)
-- [x] Verified locally: built zip invoked with Function URL events (CORS allow/deny, docs 404, refusal, real Gemini answer); 19 backend tests
-- [x] **You:** `gh auth login` (+ `workflow` scope)
-- [x] **You:** AWS account (Free plan, $100 credits to 2027-05-11), IAM user `deployer`, AWS CLI v2 configured. Do NOT create a spend limit in AWS Settings: near the limit AWS denies Lambda/CloudFormation creation
-- [x] Pushed to https://github.com/junaid-2k3/Rag-chatbot (branch `main`); Pages enabled (Actions source); workflow green; live at https://junaid-2k3.github.io/Rag-chatbot/ (API URL still defaults to localhost until the backend is deployed)
-- [x] Deployed to ap-southeast-2 with `ALLOWED_ORIGINS=https://junaid-2k3.github.io ./infrastructure/deploy.sh`. Function URL: https://nsgcu3ywayyk3gagfwq6thvkru0htuyi.lambda-url.ap-southeast-2.on.aws/ (1024 MB, reserved concurrency 3, Swagger off, logs kept 14 days)
-- [ ] Set repo variable `PUBLIC_API_URL` = Function URL, run the Pages workflow
-- [ ] End-to-end test from the live site; measure cold and warm latency; check billing page
+## Phase 6 — AWS deploy (done)
+- [x] Decisions: zip + model fetched from S3 to /tmp; region **ap-southeast-2 (Sydney)** (new-style Free plan accounts are locked to one region chosen from the contact country; other regions are denied by AWS-managed SCPs); reserved concurrency 3 (quota 400); repo `junaid-2k3/Rag-chatbot`
+- [x] Lambda handler (Mangum, Function URL), S3 asset loader, Swagger off in production, CloudFormation stack `fast-pwr-chatbot`
+- [x] Deployed: https://nsgcu3ywayyk3gagfwq6thvkru0htuyi.lambda-url.ap-southeast-2.on.aws/ (1024 MB, 90 s timeout, logs kept 14 days, private bucket `fast-pwr-chatbot-923484439416-ap-southeast-2`)
+- [x] Frontend live at https://junaid-2k3.github.io/Rag-chatbot/ (repo variable `PUBLIC_API_URL` set; Pages workflow green)
+- [x] End-to-end in a browser on the live site: answers, citations, follow-up, no CORS errors
+- [x] Latency measured: cold start about 1.5 s init + 2.5 s first-request (S3 download + load); warm Lambda 1-2 s plus the Gemini call (median 1.3 s, spikes up to ~14 s); about 0.7 s network from Pakistan to Sydney
+- [x] Fixes found during deploy: readable PDF titles, one card per source, fewer citation markers, Gemini timeout 30 -> 15 s, app logs now reach CloudWatch
+- [ ] **You:** open the AWS Billing console and confirm credits are being used as expected; do not create a "spend limit" in AWS Settings (near the limit AWS denies Lambda/CloudFormation)
+- Known limits: follow-up "and the admission fee?" after a hostel question is rewritten to a hostel query and returns the Rs 3,000 applicant fee; Gemini free tier can spike to 10+ s
 
 ## Phase 7 — Docs
 - [ ] README, architecture diagram, eval results, latency numbers
