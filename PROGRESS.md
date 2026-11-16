@@ -58,5 +58,13 @@
 ## Maintenance log
 - 2026-11-16: "who is the director" was refused. Fixed by dropping the generic title from embedded text, removing <40-character chunks and adding `data/curated/director.md`. Recall@5 0.88 -> 0.96, MRR 0.80 -> 0.87 (26 questions). Deploy now sets `INDEX_VERSION` so new indexes always reach running containers. See `evaluation/report.md`.
 
-## Phase 7 — Docs
-- [ ] README, architecture diagram, eval results, latency numbers
+## Phase 7 — Documentation and polish (done)
+- [x] README: overview, two architecture diagrams (Mermaid, render checked), step-by-step request flow, stack, layout, local run, deploy, logs
+- [x] Evaluation results published: README table + `evaluation/report.md` (Recall@5 0.96, Precision@5 0.52, MRR 0.87; refusals 6/6, false refusals 0/26)
+- [x] Latency numbers published (cold start, warm, Gemini median/spikes, network)
+- [x] Design decisions, limits/security and known limitations documented
+- [x] Structured logging + CloudWatch (14-day retention), input-size limits and concurrency cap (done in Phases 4-6)
+- [x] Caching: model, index and S3 downloads are cached per Lambda container; no answer cache (not added on purpose: questions rarely repeat and it would serve stale answers)
+- [ ] Not done: per-IP rate limiting (needs API Gateway/WAF or a database, outside the $0 plan)
+- [ ] **You:** record the demo (script in `docs/demo-script.md`)
+- [ ] **You:** open the AWS Billing console and confirm credits are being used as expected

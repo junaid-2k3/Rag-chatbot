@@ -41,7 +41,7 @@ Changes: generic titles are no longer embedded (PDFs use their file name instead
 
 | Index | Chunks | Questions | Recall@5 | Precision@5 | MRR |
 |---|---|---|---|---|---|
-| Before (shipped 2026-11-12) | 1393 | 26 | 0.88 | 0.48 | 0.80 |
+| Before (shipped 2026-11-12) | 1392 | 26 | 0.88 | 0.48 | 0.80 |
 | After | 1178 | 26 | **0.96** | **0.52** | **0.87** |
 
 Full pipeline after: correct refusals 6/6, false refusals 0/26 (was 1/25), faithfulness 5.0, relevancy 5.0, expected facts 25/26 (q22 expects the word "bus"; the answer says "transport", so that is a weak ground-truth key, not a wrong answer).
