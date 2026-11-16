@@ -1,0 +1,30 @@
+The RAG pipeline is plain Python.
+
+
+**Scraping and data**
+- Scrapling's `Spider` for the crawl.
+- `markdownify` for HTML to Markdown, and PyMuPDF for PDF text.
+
+**Retrieval**
+- `BAAI/bge-small-en-v1.5` run through ONNX Runtime, with the Hugging Face `tokenizers` library, for embeddings.
+- NumPy cosine similarity over a `vectors.npy` file. There is no vector database.
+- Chunking is custom code: 250 tokens with 40 overlap, split by heading.
+
+**Generation**
+- Gemini (`gemini-3.1-flash-lite`, with a fallback model) called over plain REST using `httpx`. No LLM SDK.
+- The prompt builder, query rewriting, citation renumbering and refusal logic are all hand-written in `backend/app/services/`.
+
+**Backend**
+- FastAPI with pydantic, wrapped for AWS Lambda by Mangum.
+- Pytest for the tests.
+
+**Frontend**
+- Astro 7 (built on Vite), TypeScript and plain CSS, with self-hosted IBM Plex Sans.
+- No UI framework and no animation libraries.
+
+**Infrastructure**
+- AWS Lambda with a Function URL, a private S3 bucket and CloudWatch logs, defined in a CloudFormation template and deployed with a shell script.
+- GitHub Pages and GitHub Actions for the frontend.
+- Python 3.12 managed with `uv`, and `cfn-lint` for template checks.
+
+I skipped LangChain on purpose, because this pipeline is small and each step is simple to read, test and debug directly.

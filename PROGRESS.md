@@ -55,5 +55,8 @@
 - [ ] **You:** open the AWS Billing console and confirm credits are being used as expected; do not create a "spend limit" in AWS Settings (near the limit AWS denies Lambda/CloudFormation)
 - Known limits: follow-up "and the admission fee?" after a hostel question is rewritten to a hostel query and returns the Rs 3,000 applicant fee; Gemini free tier can spike to 10+ s
 
+## Maintenance log
+- 2026-11-16: "who is the director" was refused. Fixed by dropping the generic title from embedded text, removing <40-character chunks and adding `data/curated/director.md`. Recall@5 0.88 -> 0.96, MRR 0.80 -> 0.87 (26 questions). Deploy now sets `INDEX_VERSION` so new indexes always reach running containers. See `evaluation/report.md`.
+
 ## Phase 7 — Docs
 - [ ] README, architecture diagram, eval results, latency numbers

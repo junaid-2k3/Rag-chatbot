@@ -14,10 +14,13 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "backend"))
 from app.services.embeddings import Embedder  # noqa: E402
+from app.services.rag import GENERIC_TITLES, _pdf_title  # noqa: E402
 
 MD, OUT = ROOT / "data" / "markdown", Path(os.environ.get("INDEX_OUT", ROOT / "index"))
+CURATED = ROOT / "data" / "curated"  # hand-written fact pages, same format as data/markdown
 CHUNK_TOKENS, OVERLAP_TOKENS = int(os.environ.get("CHUNK_TOKENS", 250)), int(os.environ.get("OVERLAP_TOKENS", 40))
 # outdated PDFs, excluded per user decision (2020 prospectus/handbook; 2021-22 calendars, timetables, date sheet)
+MIN_CHARS = 40  # drop fragments such as "Advisor" that carry no information
 EXCLUDE_URL = ("Prospectus-2020.pdf", "student-handbook-2020.pdf", "Academic%20Calendar", "Time%20Table", "DateSheet%20Final")
 
 
@@ -41,6 +44,13 @@ def clean(body: str) -> str:
     body = BREADCRUMB.sub("", body + "\n")
     body = BOILERPLATE.sub("", body)
     return TEL_MAIL.sub(r"\1", body).strip()
+
+
+def embed_label(c: dict) -> str:
+    """Context line embedded with each chunk. The generic site title is left out: it appeared on every
+    page, so queries containing "FAST NUCES Peshawar" matched the prefix instead of the content."""
+    title = _pdf_title(c["url"]) if c["source_type"] == "pdf" else ("" if c["title"] in GENERIC_TITLES else c["title"])
+    return " | ".join(x for x in (title, c["heading_path"]) if x)
 
 
 def sections(body: str):
@@ -77,12 +87,14 @@ def main():
     tok = emb.tok
     tok.no_truncation(), tok.no_padding()  # for counting/offsets
     chunks = []
-    for f in sorted(MD.glob("*.md")):
+    for f in sorted([*MD.glob("*.md"), *CURATED.glob("*.md")]):
         meta, body = parse(f)
         if any(x in meta["url"] for x in EXCLUDE_URL):
             continue
         for hp, text in sections(clean(body)):
             for piece in token_windows(tok, text):
+                if len(piece.strip()) < MIN_CHARS:
+                    continue
                 page = re.search(r"Page (\d+)", hp)
                 chunks.append({
                     "id": f"{f.stem}-{len(chunks)}", "url": meta["url"], "title": meta["title"],
@@ -91,7 +103,7 @@ def main():
                     "text": piece,
                 })
     tok.enable_truncation(max_length=512), tok.enable_padding()
-    inputs = [f'{c["title"]} | {c["heading_path"]}\n{c["text"]}' for c in chunks]
+    inputs = [f'{embed_label(c)}\n{c["text"]}' for c in chunks]
     vecs = emb.embed_documents(inputs)
     OUT.mkdir(exist_ok=True)
     np.save(OUT / "vectors.npy", vecs)

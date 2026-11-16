@@ -36,7 +36,8 @@ aws s3 cp build/lambda.zip "s3://$BUCKET/$KEY" --only-show-errors
 aws cloudformation deploy --stack-name "$STACK" --template-file infrastructure/template.yaml \
   --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset \
   --parameter-overrides "BucketName=$BUCKET" "CodeKey=$KEY" \
-  "AllowedOrigins=$ALLOWED_ORIGINS" "GeminiApiKey=$GEMINI_API_KEY"
+  "AllowedOrigins=$ALLOWED_ORIGINS" "GeminiApiKey=$GEMINI_API_KEY" \
+  "IndexVersion=$(sha256sum index/manifest.json | cut -c1-12)"
 
 URL=$(aws cloudformation describe-stacks --stack-name "$STACK" \
   --query "Stacks[0].Outputs[?OutputKey=='FunctionUrl'].OutputValue" --output text)

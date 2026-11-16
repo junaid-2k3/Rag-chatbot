@@ -22,10 +22,11 @@
 {"id": "q22", "answerable": true, "relevant_urls": ["/pages/campus-facilities"], "answer_keys": ["bus"]}
 {"id": "q23", "answerable": true, "relevant_urls": ["/pages/geiah-policy"], "answer_keys": ["Sara Rehmat"]}
 {"id": "q24", "answerable": true, "relevant_urls": ["/final_year_project/"], "answer_keys": ["Omar Usman Khan"]}
-{"id": "q25", "answerable": true, "relevant_urls": ["/pages/dir-message"], "answer_keys": ["Omar Usman Khan"]}
+{"id": "q25", "answerable": true, "relevant_urls": ["/pages/dir-message", "faculty-profile/?id=9237"], "answer_keys": ["Omar Usman Khan"]}
 {"id": "q26", "answerable": false, "relevant_urls": [], "answer_keys": []}
 {"id": "q27", "answerable": false, "relevant_urls": [], "answer_keys": []}
 {"id": "q28", "answerable": false, "relevant_urls": [], "answer_keys": []}
 {"id": "q29", "answerable": false, "relevant_urls": [], "answer_keys": []}
 {"id": "q30", "answerable": false, "relevant_urls": [], "answer_keys": []}
 {"id": "q31", "answerable": false, "relevant_urls": [], "answer_keys": []}
+{"id": "q32", "answerable": true, "relevant_urls": ["faculty-profile/?id=9237"], "answer_keys": ["Omar Usman Khan"]}
